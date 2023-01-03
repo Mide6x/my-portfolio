@@ -7,7 +7,9 @@
     <title>Mide's Portfolio</title>
     <meta name="description" content="BiGMiDE">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" href="img/icons/logo.png">
     <!-- External CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/whatsapp-web-api/dist/whatsapp-web-api.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
@@ -23,7 +25,6 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <!-- Modernizr JS for IE8 support of HTML5 elements and media queries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-
 </head>
 <body data-spy="scroll" data-target="#navbar" class="static-layout">
 	<nav id="header-navbar" class="navbar navbar-expand-lg py-4">
@@ -75,19 +76,21 @@
 		</p>
 		<p>adewoleolumide05@gmail.com</p>
 	</div>
-</div><div id="side-search" class="sidenav">
-	<a href="javascript:void(0)" id="side-search-close">&times;</a>
+</div>
+<div id="side-search" class="sidenav">
+	<a href="" id="side-search-close">&times;</a>
 	<div class="sidenav-content">
 		<form action="">
 			<div class="input-group md-form form-sm form-2 pl-0">
-			<input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search">
+			<input class="form-control my-0 py-1 red-border" id="search-query" type="text" placeholder="Search" aria-label="Search">
 			<div class="input-group-append">
-			<button class="input-group-text red lighten-3" id="basic-text1">
+			<button class="input-group-text red lighten-3" id="search-button">
 			<span class="lnr lnr-magnifier"></span>
 			</button>
 			</div>
 			</div>
 		</form>
+        <div id="search-results"></div>
 	</div>
 	
 </div>	<div class="jumbotron jumbotron-single d-flex align-items-center" style="background-image: url(img/bg.jpg)">
@@ -116,9 +119,9 @@
                                     <div class="blog-tag">
                                         <a href="#"><h6><small>LIFESTYLE</small></h6></a>
                                     </div>
-                                    <div class="blog-title">
+                                    <div class="blog-title"  title="its a new year" data-link="/single.html">
                                         <a href="single.html"><h4>It's a New Year</h4></a>
-                                    </div>
+                                    </div> 
                                     <div class="blog-meta">
                                         <p class="blog-date">31 December 2022</p>
                                     </div>
@@ -130,7 +133,7 @@
                                     </div>
                                     <!--Share Post-->
                                     <div class="blog-share-wrapper">
-                                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://new-syte.netlify.app/single.html" data-text="your_text" data-show-count="false">
+                                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://new-syte.netlify.app/single.html" data-text="Hey! Check out my new blog post 🚀" data-show-count="false">
                                             <i class="fab fa-twitter-square"></i>
                                         </a>
                                         <script async src="https://platform.twitter.com/widgets.js"></script>
@@ -164,5 +167,53 @@
 	<script src="js/app.min.js "></script>
     <script src="js/footer.js"></script>
 	<script src="//localhost:35729/livereload.js"></script>
+    <!-- JavaScript -->
+<!-- HTML -->
+<input type="text" id="search-query">
+<button id="search-button">Search</button>
+<div id="search-results"></div>
+
+<!-- JavaScript -->
+<script>
+  // Listen for a click event on the search button
+document.getElementById("search-button").addEventListener("click", function() {
+    // Get the search query
+    var searchQuery = document.getElementById("search-query").value;
+
+    // Convert the search query to lowercase and remove any special characters
+    searchQuery = searchQuery.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    // Search the page for elements that contain the search query
+    var matchingElements = document.querySelectorAll("[title]");
+
+    // Filter the matching elements to those that contain the search query, ignoring capitalization and special characters
+    var filteredElements = [];
+    for (var i = 0; i < matchingElements.length; i++) {
+    var element = matchingElements[i];
+    var elementText = element.title.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (elementText.indexOf(searchQuery) !== -1) {
+        filteredElements.push(element);
+    }
+    }
+
+    // If no elements are found, display a "no results" message
+    if (matchingElements.length === 0) {
+    document.getElementById("search-results").innerHTML = "No results found.";
+    } else {
+      // Otherwise, display a list of the matching elements with links
+    var html = "<ul>";
+    for (var i = 0; i < matchingElements.length; i++) {
+        var element = matchingElements[i];
+        var linkUrl = element.getAttribute("data-link");
+        html += "<li><a href='" + linkUrl + "'>" + element.title + "</a></li>";
+    }
+    html += "</ul>";
+    document.getElementById("search-results").innerHTML = html;
+    }
+});
+</script>
+
+
+
 </body>
 </html>
